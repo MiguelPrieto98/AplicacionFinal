@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/tv_titulo"
+        android:layout_width="144dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="84dp"
+        android:layout_marginTop="110dp"
+        android:layout_marginBottom="30dp"
+        android:text="@string/id_titulo"
+        app:layout_constraintBottom_toTopOf="@+id/tV_user"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/ed_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="22dp"
+        android:ems="10"
+        android:inputType="text"
+        android:text="Name"
+        app:layout_constraintBottom_toTopOf="@+id/tV_passw"
+        app:layout_constraintStart_toStartOf="@+id/tV_user"
+        app:layout_constraintTop_toBottomOf="@+id/tV_user" />
+
+    <TextView
+        android:id="@+id/tV_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="13dp"
+        android:text="@string/id_user"
+        app:layout_constraintBottom_toTopOf="@+id/ed_name"
+        app:layout_constraintStart_toStartOf="@+id/tv_titulo"
+        app:layout_constraintTop_toBottomOf="@+id/tv_titulo" />
+
+    <TextView
+        android:id="@+id/tV_passw"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="@string/id_pasw"
+        app:layout_constraintBottom_toTopOf="@+id/id_passw"
+        app:layout_constraintStart_toStartOf="@+id/ed_name"
+        app:layout_constraintTop_toBottomOf="@+id/ed_name" />
+
+    <Button
+        android:id="@+id/bt_Acces"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="129dp"
+        android:layout_marginBottom="109dp"
+        android:text="@string/id_iniciar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/id_passw" />
+
+    <EditText
+        android:id="@+id/id_passw"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="236dp"
+        android:ems="10"
+        android:inputType="textPassword"
+    app:layout_constraintBottom_toTopOf="@+id/bt_Acces"
+    app:layout_constraintStart_toStartOf="@+id/tV_passw"
+    app:layout_constraintTop_toBottomOf="@+id/tV_passw" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

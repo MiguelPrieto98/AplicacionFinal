@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">AplicacionFinal</string>
+    <string name="id_titulo">Mi aplicacion</string>
+    <string name="id_user">Usuario</string>
+    <string name="id_pasw">Contraseña</string>
+    <string name="id_iniciar">Acceder</string>
+    <string name="id_recargar">Actualizar</string>
+</resources>
