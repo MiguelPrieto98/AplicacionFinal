@@ -1,49 +1,69 @@
 package es.etg.pmdm.aplicacionfinal
 
-import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.widget.ArrayAdapter
 import androidx.lifecycle.lifecycleScope
-import androidx.room.Room
 import es.etg.pmdm.aplicacionfinal.data.AppDatabase
-import es.etg.pmdm.aplicacionfinal.data.Item
 import es.etg.pmdm.aplicacionfinal.databinding.ActivityMenuBinding
+import es.etg.pmdm.aplicacionfinal.network.RetrofitClient
 import kotlinx.coroutines.launch
 
 class MenuActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMenuBinding
-    private lateinit var db: AppDatabase   // ← Declaración correcta
+    private lateinit var db: AppDatabase
+
+    private val PREFS = "prefs"
+    private val KEY_PRIMERA_VEZ = "primera_vez"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
 
-        // 1. ViewBinding correcto para activity_menu.xml
         binding = ActivityMenuBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // 2. Inicializar Room ANTES de usarla
-        db = Room.databaseBuilder(
-            applicationContext,
-            AppDatabase::class.java,
-            "mi_db"
-        ).build()
+        db = AppDatabase.getDatabase(this)
 
-        // 3. Ahora sí puedes usar db
+        val prefs = getSharedPreferences(PREFS, MODE_PRIVATE)
+        val primeraVez = prefs.getBoolean(KEY_PRIMERA_VEZ, true)
+
+        if (primeraVez) {
+            cargarDesdeRestYGuardarEnRoom()
+            prefs.edit().putBoolean(KEY_PRIMERA_VEZ, false).apply()
+        } else {
+            cargarDesdeRoom()
+        }
+
+        binding.btRefres.setOnClickListener {
+            cargarDesdeRoom()   // SOLO ROOM, NUNCA REST
+        }
+    }
+
+    private fun cargarDesdeRoom() {
         lifecycleScope.launch {
+            val datos = db.itemDao().getAll()
+            val listaStrings = datos.map { "${it.titulo} - ${it.descripcion}" }
 
-            db.itemDao().deleteAll()
-
-            db.itemDao().insertAll(
-                listOf(
-                    Item(1, "Prueba 1", "Descripción 1"),
-                    Item(2, "Prueba 2", "Descripción 2")
-                )
+            val adapter = ArrayAdapter(
+                this@MenuActivity,
+                android.R.layout.simple_list_item_1,
+                listaStrings
             )
 
-            val datos = db.itemDao().getAll()
-            println("ROOM FUNCIONA: $datos")
+            binding.listView.adapter = adapter
+        }
+    }
+
+    private fun cargarDesdeRestYGuardarEnRoom() {
+        lifecycleScope.launch {
+
+            val datosRest = RetrofitClient.api.getItems()
+
+            db.itemDao().deleteAll()
+            db.itemDao().insertAll(datosRest)
+
+            cargarDesdeRoom()
         }
     }
 }
